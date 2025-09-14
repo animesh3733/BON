@@ -40,21 +40,16 @@ A simple Node.js and MongoDB backend that simulates a credit card reward system,
 git clone <repo-url>
 cd bon-rewards-backend
 
-text
 
 2. Install dependencies:
 
 npm install
 
-text
-
 3. Configure MongoDB connection string via environment variable:
 
-Create a `.env` file or set environment variable `MONGO_URI`:
+Create a `.env` file or set environment variable `MONGODB_URI`:
 
 MONGODB_URI=your-mongodb-connection-string
-
-text
 
 4. Start MongoDB server if using local MongoDB:
 
@@ -67,6 +62,40 @@ node app.js
 
 
 The server will listen on port 3000 by default.
+
+---
+
+## API Endpoints Overview
+
+### User APIs (`/user`)
+
+- **POST /**  
+Create a new user  
+Required fields: `userName`, `userEmail`  
+Returns the created user with unique identifier.
+
+- **GET /:id/rewards**  
+Retrieve list of rewards for the user identified by `id`.  
+Returns 404 if no rewards found.
+
+- **GET /:id/bills**  
+Retrieve list of bills for the user identified by `id`.  
+Returns 404 if no bills found.
+
+---
+
+### Bill APIs (`/bill`)
+
+- **POST /**  
+Create a new bill for a user  
+Required fields: `userId`, `dueDate`, `amount`, `paymentMethod`  
+Returns created bill including unique identifier.
+
+- **POST /pay**  
+Mark a bill as paid  
+Required fields: `userId`, `billId`, `paymentDate`  
+Checks if the last 3 bills are paid on time and issues a mock reward if eligible  
+Returns whether payment was successful and if a reward was issued.
 
 ---
 
@@ -126,11 +155,3 @@ The server will listen on port 3000 by default.
 - `PORT`: Port for the server
 
 ---
-
-## License
-
-MIT License
-
----
-
-Contributions, feedback, and issues are welcome to improve the project further.
